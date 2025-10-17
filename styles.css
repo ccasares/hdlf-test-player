@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 100%;
+    width: fit-content;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 887px;
+    max-width: 100%;
+    height: 499px;
+    max-height: calc(100vh - 40px);
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+}
+
+/* Overlay en la esquina superior derecha para cubrir el botón de YouTube */
+.overlay-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 60px;
+    background: transparent;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Overlay en la parte inferior para cubrir sugerencias y botones */
+.overlay-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: transparent;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Overlay central para cuando se pausa (cubre las sugerencias) */
+.overlay-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 60%;
+    background: transparent;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 920px) {
+    .video-wrapper {
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; /* Ratio 16:9 */
+        position: relative;
+    }
+    
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    .video-wrapper {
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .video-wrapper iframe {
+        border-radius: 8px;
+    }
+}
+
