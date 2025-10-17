@@ -4,6 +4,7 @@ Proyecto web simple para visualizar un video de YouTube con overlays para oculta
 
 ## Características
 
+- **Modo de privacidad mejorada**: Usa `youtube-nocookie.com` en lugar de `youtube.com` para mejor privacidad
 - **Iframe optimizado**: Configurado con parámetros para minimizar elementos de YouTube
 - **Overlays**: Capas transparentes que cubren las áreas donde aparecen botones y sugerencias
 - **Diseño moderno**: Fondo degradado y sombras elegantes
@@ -11,11 +12,13 @@ Proyecto web simple para visualizar un video de YouTube con overlays para oculta
 
 ## Parámetros de YouTube utilizados
 
+- **youtube-nocookie.com**: Dominio de privacidad mejorada que no guarda cookies de seguimiento
 - `modestbranding=1`: Minimiza el logo de YouTube
 - `rel=0`: Reduce videos relacionados al final
 - `showinfo=0`: Oculta información del video
 - `iv_load_policy=3`: Desactiva anotaciones
 - `disablekb=1`: Desactiva controles de teclado (ayuda a reducir overlays)
+- `origin`: Parámetro de seguridad para especificar el dominio de origen
 
 ## Uso
 
