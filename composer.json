@@ -1,5 +1,5 @@
 {
-  "name": "video-viewer",
+  "name": "ccasares/video-viewer",
   "description": "Visor de video YouTube",
   "require": {
     "php": "^8.1"
