@@ -1,8 +1,18 @@
 {
-  "name": "ccasares/video-viewer",
-  "description": "Visor de video YouTube",
-  "require": {
-    "php": "^8.1"
-  }
+    "name": "protected-video-server",
+    "description": "Servidor de videos protegidos con tokens temporales y validación HMAC",
+    "type": "project",
+    "require": {
+        "php": "^7.4 || ^8.0"
+    },
+    "authors": [
+        {
+            "name": "Video Server",
+            "email": "admin@example.com"
+        }
+    ],
+    "autoload": {
+        "files": []
+    }
 }
 

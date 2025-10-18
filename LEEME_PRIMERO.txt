@@ -1,0 +1,337 @@
+================================================================
+🔒 REPRODUCTOR DE VIDEO ULTRA-SEGURO
+================================================================
+
+¡Bienvenido! Has creado un sistema de reproducción de video donde
+la URL NUNCA se expone en el navegador.
+
+================================================================
+¿QUÉ TIENES AQUÍ?
+================================================================
+
+Un servidor completo con DOS sistemas de protección:
+
+1. 🆕 REPRODUCTOR ULTRA-SEGURO (RECOMENDADO)
+   → La URL del video NUNCA aparece en el frontend
+   → Usa API proxy con tokens de sesión temporal
+   → Máxima seguridad y protección
+
+2. 📺 SISTEMA CLÁSICO (Legacy)
+   → URLs firmadas con HMAC-SHA256
+   → Tokens temporales con expiración
+   → Validación de referer
+
+================================================================
+¿CÓMO FUNCIONA EL SISTEMA NUEVO?
+================================================================
+
+1. Usuario visita: /access.php
+2. Sistema genera token de sesión temporal
+3. Usuario accede a: /player.html?token=abc123...
+4. Reproductor solicita video a: /api/stream.php?token=abc123...
+5. API valida token y hace proxy del video desde quasars.ddns.net
+6. Video se reproduce SIN exponer la URL real
+
+¡El navegador NUNCA ve la URL de quasars.ddns.net:8880!
+
+================================================================
+INICIO RÁPIDO - 3 OPCIONES
+================================================================
+
+OPCIÓN A: PRUEBA LOCAL (Más rápido)
+------------------------------------
+1. Lee: TEST_LOCAL.md
+2. php -S localhost:8000
+3. Visita: http://localhost:8000/access.php
+
+OPCIÓN B: DESPLEGAR A HEROKU (Recomendado)
+------------------------------------------
+1. Lee: HEROKU_SETUP.txt
+2. heroku create mi-app
+3. heroku config:set SECRET_KEY=$(openssl rand -hex 32)
+4. git push heroku main
+5. heroku open
+
+OPCIÓN C: SYNOLOGY NAS
+---------------------
+1. Sube archivos a /volume1/web/
+2. Crea archivo .env (ver CONFIGURACION_ENV.txt)
+3. Configura Web Station con PHP 7.4+
+4. Visita: https://tu-nas.com/access.php
+
+================================================================
+ARCHIVOS IMPORTANTES
+================================================================
+
+📄 LEEME_PRIMERO.txt        ← Estás aquí
+📄 TEST_LOCAL.md            ← Probar en local
+📄 HEROKU_SETUP.txt         ← Desplegar a Heroku (paso a paso)
+📄 REPRODUCTOR_SEGURO.md    ← Documentación completa del sistema nuevo
+📄 README.md                ← Documentación técnica completa
+📄 DEPLOY.md                ← Guía detallada de despliegue
+📄 INICIO_RAPIDO.md         ← Guía rápida 5 minutos
+
+================================================================
+ESTRUCTURA DEL PROYECTO
+================================================================
+
+/
+├── access.php              🔑 Página de acceso (EMPIEZA AQUÍ)
+├── player.html             🎬 Reproductor ultra-seguro
+│
+├── api/
+│   ├── session.php         🎫 Gestión de tokens temporales
+│   └── stream.php          📡 API proxy para video
+│
+├── sessions/               💾 Tokens temporales (auto-gestionado)
+│
+├── video.php               📺 Sistema legacy de videos
+├── generate_url.php        🔗 Generador de URLs firmadas (legacy)
+├── demo.html               🎪 Demo del sistema legacy
+├── index.php               🏠 Página principal
+│
+└── videos/                 🎥 Tus archivos de video
+
+================================================================
+¿QUÉ SISTEMA USAR?
+================================================================
+
+USA EL NUEVO (Recomendado): /access.php
+----------------------------------------
+✅ URL nunca se expone
+✅ Máxima seguridad
+✅ Tokens de sesión temporal
+✅ Interfaz moderna
+✅ Fácil de usar
+
+USA EL LEGACY: /demo.html
+-------------------------
+✅ URLs firmadas HMAC
+✅ Compatible con URLs públicas
+⚠️  La URL está en el frontend (aunque firmada)
+
+================================================================
+CONFIGURACIÓN MÍNIMA REQUERIDA
+================================================================
+
+Crea un archivo .env con:
+
+SECRET_KEY=clave-secreta-aqui
+ALLOWED_DOMAIN=https://tudominio.com
+BASE_URL=https://tudominio.com
+
+Genera clave secreta:
+openssl rand -hex 32
+
+================================================================
+PROBAR RÁPIDAMENTE
+================================================================
+
+1. Crear .env:
+   cp CONFIGURACION_ENV.txt .env
+   (Edita .env con tu configuración)
+
+2. Iniciar servidor:
+   php -S localhost:8000
+
+3. Abrir navegador:
+   http://localhost:8000/access.php
+
+4. Hacer clic en "Acceso Directo"
+
+5. ¡Disfruta del video!
+
+================================================================
+URL DEL VIDEO CONFIGURADA
+================================================================
+
+Actualmente apunta a:
+http://quasars.ddns.net:8880/videos/webtest.mp4
+
+Para cambiarla, edita: api/stream.php
+Línea 45: $VIDEO_URL = 'tu-nueva-url-aqui';
+
+O agrega más videos en el array $videoUrls (línea 200)
+
+================================================================
+DESPLIEGUE A PRODUCCIÓN
+================================================================
+
+HEROKU (Recomendado para principiantes):
+----------------------------------------
+heroku create mi-reproductor
+heroku config:set SECRET_KEY=$(openssl rand -hex 32)
+heroku config:set ALLOWED_DOMAIN=https://mi-reproductor.herokuapp.com
+heroku config:set BASE_URL=https://mi-reproductor.herokuapp.com
+git push heroku main
+heroku open
+
+Ver guía completa: HEROKU_SETUP.txt
+
+SYNOLOGY NAS:
+-------------
+1. Subir archivos vía File Station
+2. Configurar .env
+3. Habilitar PHP en Web Station
+4. Configurar Virtual Host
+
+Ver guía completa: README.md (sección Synology)
+
+================================================================
+SEGURIDAD
+================================================================
+
+El sistema nuevo es ULTRA SEGURO porque:
+
+1. ✅ URL real NUNCA en el frontend
+2. ✅ Tokens temporales con expiración (1 hora)
+3. ✅ Validación en cada request
+4. ✅ Sesión vinculada a IP (opcional)
+5. ✅ API proxy intermediaria
+6. ✅ No se puede copiar la URL del video
+7. ✅ Inspector del navegador no ve nada
+
+Aún así, recuerda:
+- El video se transmite al navegador (como Netflix, YouTube, etc.)
+- Con herramientas avanzadas se puede capturar el stream
+- Pero requiere token válido que expira
+
+================================================================
+PERSONALIZACIÓN
+================================================================
+
+CAMBIAR DURACIÓN DE SESIÓN:
+----------------------------
+Edita api/session.php, línea 47:
+$SESSION_DURATION = 3600; // 1 hora
+
+AGREGAR CÓDIGO DE ACCESO:
+--------------------------
+En .env:
+ACCESS_CODE=mi-codigo-secreto
+
+O en Heroku:
+heroku config:set ACCESS_CODE=mi-codigo-secreto
+
+AGREGAR MÁS VIDEOS:
+-------------------
+Edita api/stream.php, líneas 200-205:
+$videoUrls = [
+    'webtest' => 'http://...',
+    'video2' => 'http://...',
+    'video3' => 'http://...'
+];
+
+CAMBIAR DISEÑO:
+---------------
+Los archivos HTML tienen CSS inline, fácil de modificar:
+- access.php (línea 10-200)
+- player.html (línea 10-220)
+
+================================================================
+SOLUCIÓN RÁPIDA DE PROBLEMAS
+================================================================
+
+❌ "Token required"
+   → Vuelve a /access.php y genera nuevo token
+
+❌ "Invalid or expired token"
+   → Token expiró (>1 hora), genera uno nuevo
+
+❌ "Remote video not available"
+   → Servidor quasars.ddns.net:8880 no responde
+   → Verifica que esté online
+
+❌ Video no carga
+   → Abre DevTools (F12) > Console
+   → Lee el error específico
+   → Verifica token con: /api/session.php?action=validate&token=TU_TOKEN
+
+❌ "Application Error" en Heroku
+   → heroku logs --tail
+   → Lee el error y corrígelo
+
+================================================================
+TESTING
+================================================================
+
+Probar API de sesión:
+curl -X POST http://localhost:8000/api/session.php?action=create \
+  -H "Content-Type: application/json" \
+  -d '{"video_id": "webtest"}'
+
+Probar validación:
+curl http://localhost:8000/api/session.php?action=validate&token=TOKEN_AQUI
+
+Ver sesiones activas:
+ls -lh sessions/
+
+Ver logs en Heroku:
+heroku logs --tail
+
+================================================================
+RECURSOS Y DOCUMENTACIÓN
+================================================================
+
+📚 Documentación Completa:
+   - README.md              (Todo sobre el proyecto)
+   - REPRODUCTOR_SEGURO.md  (Sistema nuevo en detalle)
+   - DEPLOY.md              (Despliegue completo)
+
+🚀 Guías de Inicio:
+   - TEST_LOCAL.md          (Probar localmente)
+   - HEROKU_SETUP.txt       (Desplegar a Heroku)
+   - INICIO_RAPIDO.md       (Guía 5 minutos)
+
+⚙️ Configuración:
+   - CONFIGURACION_ENV.txt  (Cómo crear .env)
+   - .env.example           (Plantilla de .env)
+
+================================================================
+SOPORTE
+================================================================
+
+¿Problemas? Revisa estos archivos en orden:
+
+1. TEST_LOCAL.md (si es en local)
+2. HEROKU_SETUP.txt (si es en Heroku)
+3. REPRODUCTOR_SEGURO.md (troubleshooting completo)
+4. README.md (FAQ y soluciones)
+
+================================================================
+PRÓXIMOS PASOS
+================================================================
+
+1. ✅ Leer TEST_LOCAL.md
+2. ✅ Probar en local (php -S localhost:8000)
+3. ✅ Verificar que todo funciona
+4. ✅ Configurar variables para producción
+5. ✅ Desplegar a Heroku (HEROKU_SETUP.txt)
+6. ✅ Compartir el link /access.php con usuarios
+
+================================================================
+¡LISTO PARA USAR!
+================================================================
+
+Comando más rápido para empezar:
+
+1. php -S localhost:8000
+2. Visita: http://localhost:8000/access.php
+3. Haz clic en "Acceso Directo"
+4. ¡Disfruta!
+
+================================================================
+RECORDATORIO
+================================================================
+
+La URL del video (http://quasars.ddns.net:8880/videos/webtest.mp4)
+está configurada en: api/stream.php línea 45
+
+Si quieres cambiarla, edita ese archivo.
+
+================================================================
+
+¡Que disfrutes tu sistema de videos ultra-seguro! 🔒🎬
+
+================================================================
+

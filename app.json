@@ -1,0 +1,45 @@
+{
+  "name": "Protected Video Server",
+  "description": "Servidor de videos protegidos con tokens temporales y validación HMAC-SHA256",
+  "repository": "https://github.com/tuusuario/protected-video-server",
+  "logo": "https://img.icons8.com/fluency/96/video.png",
+  "keywords": [
+    "php",
+    "video",
+    "streaming",
+    "security",
+    "hmac",
+    "protected",
+    "token"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/php"
+    }
+  ],
+  "env": {
+    "SECRET_KEY": {
+      "description": "Clave secreta para firmar tokens HMAC (generar con: openssl rand -hex 32)",
+      "generator": "secret",
+      "required": true
+    },
+    "ALLOWED_DOMAIN": {
+      "description": "Dominio autorizado para acceder a los videos (ej: https://midominio.com)",
+      "value": "https://midominio.com",
+      "required": true
+    },
+    "BASE_URL": {
+      "description": "URL base del servidor (se configurará automáticamente)",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "stack": "heroku-22",
+  "addons": []
+}
+

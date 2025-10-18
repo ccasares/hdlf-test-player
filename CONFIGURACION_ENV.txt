@@ -1,0 +1,97 @@
+================================================================
+INSTRUCCIONES PARA CREAR EL ARCHIVO .env
+================================================================
+
+El archivo .env contiene la configuración sensible del servidor.
+Por seguridad, NO se incluye en el repositorio.
+
+PASOS PARA CREAR EL ARCHIVO .env:
+
+1. Crea un archivo llamado ".env" en la raíz del proyecto
+
+2. Copia y pega el siguiente contenido:
+
+   ----------------------------------------------------------------
+   # Configuración del Servidor de Videos Protegidos
+
+   # Clave secreta para firmar tokens (CAMBIAR EN PRODUCCIÓN)
+   SECRET_KEY=your-secret-key-here-change-this-in-production
+
+   # Dominio autorizado para acceder a los videos
+   ALLOWED_DOMAIN=https://midominio.com
+
+   # Ruta donde se encuentran los videos
+   VIDEO_PATH=/volume1/web/videos/
+
+   # URL base del servidor
+   BASE_URL=http://localhost
+   ----------------------------------------------------------------
+
+3. MODIFICA los valores según tu configuración:
+
+   a) SECRET_KEY:
+      - Para Linux/Mac, genera una clave segura con:
+        openssl rand -hex 32
+      
+      - Para Windows (PowerShell):
+        [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
+      
+      - Copia el resultado y reemplaza "your-secret-key-here-change-this-in-production"
+
+   b) ALLOWED_DOMAIN:
+      - Reemplaza "https://midominio.com" con tu dominio real
+      - Ejemplo: https://www.miempresa.com
+      - Para desarrollo local: http://localhost
+
+   c) VIDEO_PATH:
+      - En Synology NAS: /volume1/web/videos/
+      - En servidor Linux: /var/www/videos/
+      - En Heroku: déjalo vacío o usa ./videos/
+      - En desarrollo local: ./videos/
+
+   d) BASE_URL:
+      - En producción: https://midominio.com
+      - En Heroku: https://tu-app.herokuapp.com
+      - En desarrollo: http://localhost
+
+4. Guarda el archivo como ".env" (con el punto al inicio)
+
+5. Verifica los permisos (Linux/Mac):
+   chmod 600 .env
+
+================================================================
+EJEMPLO DE CONFIGURACIÓN PARA SYNOLOGY NAS:
+================================================================
+
+SECRET_KEY=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+ALLOWED_DOMAIN=https://midominio.synology.me
+VIDEO_PATH=/volume1/web/videos/
+BASE_URL=https://midominio.synology.me
+
+================================================================
+EJEMPLO DE CONFIGURACIÓN PARA HEROKU:
+================================================================
+
+NOTA: En Heroku NO necesitas crear el archivo .env
+En su lugar, configura las variables con estos comandos:
+
+heroku config:set SECRET_KEY=$(openssl rand -hex 32)
+heroku config:set ALLOWED_DOMAIN=https://midominio.com
+heroku config:set BASE_URL=https://tu-app.herokuapp.com
+
+O desde el Dashboard de Heroku:
+Settings > Config Vars > Reveal Config Vars
+
+================================================================
+VERIFICACIÓN:
+================================================================
+
+Después de crear el archivo .env, verifica que funcione:
+
+1. Desde terminal:
+   php generate_url.php test.mp4 60
+
+2. Deberías ver una URL generada correctamente
+
+================================================================
+

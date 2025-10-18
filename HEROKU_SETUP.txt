@@ -1,0 +1,279 @@
+================================================================
+CONFIGURACIÓN RÁPIDA PARA HEROKU - REPRODUCTOR SEGURO
+================================================================
+
+Este archivo contiene los pasos exactos para desplegar el reproductor
+seguro de videos en Heroku.
+
+================================================================
+PASO 1: PREPARAR EL REPOSITORIO
+================================================================
+
+1. Asegúrate de estar en el directorio del proyecto:
+   
+   cd /ruta/a/tu/proyecto
+
+2. Inicializar git (si no está inicializado):
+   
+   git init
+   git add .
+   git commit -m "Initial commit: Secure video player"
+
+================================================================
+PASO 2: CREAR APLICACIÓN EN HEROKU
+================================================================
+
+1. Login en Heroku:
+   
+   heroku login
+
+2. Crear nueva aplicación:
+   
+   heroku create nombre-de-tu-app
+   
+   Ejemplo:
+   heroku create mi-reproductor-seguro
+   
+   Esto creará: https://mi-reproductor-seguro.herokuapp.com
+
+================================================================
+PASO 3: CONFIGURAR VARIABLES DE ENTORNO
+================================================================
+
+Ejecuta estos comandos UNO POR UNO:
+
+# 1. Generar y configurar clave secreta
+heroku config:set SECRET_KEY=$(openssl rand -hex 32)
+
+# 2. Configurar dominio autorizado (tu dominio de Heroku)
+heroku config:set ALLOWED_DOMAIN=https://mi-reproductor-seguro.herokuapp.com
+
+# 3. Configurar URL base
+heroku config:set BASE_URL=https://mi-reproductor-seguro.herokuapp.com
+
+# 4. (OPCIONAL) Código de acceso para restringir entrada
+heroku config:set ACCESS_CODE=mi-codigo-secreto-123
+
+================================================================
+PASO 4: DESPLEGAR A HEROKU
+================================================================
+
+1. Desplegar el código:
+   
+   git push heroku main
+   
+   O si tu rama se llama "master":
+   
+   git push heroku master
+
+2. Esperar a que termine el despliegue (puede tomar 2-3 minutos)
+
+3. Verificar que no haya errores:
+   
+   heroku logs --tail
+
+================================================================
+PASO 5: PROBAR LA APLICACIÓN
+================================================================
+
+1. Abrir en el navegador:
+   
+   heroku open
+   
+   O visita manualmente:
+   https://mi-reproductor-seguro.herokuapp.com
+
+2. Deberías ver la página principal del servidor
+
+3. Hacer clic en "🔒 Reproductor Ultra-Seguro (NUEVO)"
+
+4. En la página de acceso, hacer clic en "Acceso Directo"
+   (o ingresar código de acceso si lo configuraste)
+
+5. ¡El reproductor debería cargar y mostrar el video!
+
+================================================================
+PASO 6: VERIFICAR QUE TODO FUNCIONA
+================================================================
+
+Prueba los siguientes endpoints:
+
+1. Página principal:
+   https://mi-reproductor-seguro.herokuapp.com
+   
+2. Página de acceso:
+   https://mi-reproductor-seguro.herokuapp.com/access.php
+   
+3. API de sesión (debería devolver JSON):
+   https://mi-reproductor-seguro.herokuapp.com/api/session.php
+
+================================================================
+SOLUCIÓN DE PROBLEMAS
+================================================================
+
+Problema 1: "Application Error"
+-------------------------------
+heroku logs --tail
+(Lee el error específico y corrígelo)
+
+Problema 2: "No web processes running"
+--------------------------------------
+heroku ps:scale web=1
+
+Problema 3: Video no carga
+--------------------------
+1. Verifica que quasars.ddns.net:8880 esté accesible
+2. Prueba manualmente: http://quasars.ddns.net:8880/videos/webtest.mp4
+3. Si no funciona, actualiza la URL en api/stream.php
+
+Problema 4: "Invalid or expired token"
+--------------------------------------
+1. Limpia el caché del navegador
+2. Vuelve a access.php y genera un nuevo token
+
+Problema 5: Variables de entorno no funcionan
+---------------------------------------------
+heroku config
+(Verifica que todas las variables estén configuradas)
+
+================================================================
+COMANDOS ÚTILES
+================================================================
+
+# Ver logs en tiempo real
+heroku logs --tail
+
+# Ver todas las variables de entorno
+heroku config
+
+# Agregar/cambiar variable
+heroku config:set VARIABLE=valor
+
+# Reiniciar la aplicación
+heroku restart
+
+# Ver información de la app
+heroku info
+
+# Abrir en navegador
+heroku open
+
+# Ejecutar comando en Heroku
+heroku run bash
+
+# Ver estado de la aplicación
+heroku ps
+
+================================================================
+ACTUALIZAR LA APLICACIÓN
+================================================================
+
+Cuando hagas cambios en el código:
+
+1. git add .
+2. git commit -m "Descripción de los cambios"
+3. git push heroku main
+4. heroku logs --tail (para verificar)
+
+================================================================
+SEGURIDAD EN PRODUCCIÓN
+================================================================
+
+1. Genera una clave secreta fuerte:
+   
+   heroku config:set SECRET_KEY=$(openssl rand -hex 64)
+
+2. Configura un código de acceso:
+   
+   heroku config:set ACCESS_CODE=tu-codigo-ultra-secreto
+
+3. Actualiza ALLOWED_DOMAIN a tu dominio real (si tienes uno):
+   
+   heroku config:set ALLOWED_DOMAIN=https://tudominio.com
+
+4. Habilita HTTPS (Heroku lo hace automáticamente)
+
+================================================================
+MONITOREO
+================================================================
+
+# Ver cuántas personas están accediendo
+heroku logs --tail | grep "session.php"
+
+# Ver errores
+heroku logs --tail | grep "ERROR"
+
+# Ver uso de recursos
+heroku ps
+
+================================================================
+COSTOS
+================================================================
+
+Plan Free:
+- ✓ Gratis
+- ✓ 550 horas/mes (con tarjeta: 1000 horas)
+- ✗ Duerme después de 30 min sin actividad
+
+Plan Hobby ($7/mes):
+- ✓ No duerme
+- ✓ Métricas avanzadas
+- ✓ Mejor rendimiento
+
+Recomendación:
+- Para pruebas: Free
+- Para producción: Hobby
+
+================================================================
+EJEMPLOS DE USO
+================================================================
+
+Después de desplegar, los usuarios acceden así:
+
+1. Visitan: https://mi-reproductor-seguro.herokuapp.com/access.php
+
+2. Hacen clic en "Acceso Directo"
+
+3. Son redirigidos a: 
+   https://mi-reproductor-seguro.herokuapp.com/player.html?token=abc123...
+
+4. El video se carga y reproduce
+
+5. La URL real (quasars.ddns.net:8880) NUNCA se expone
+
+================================================================
+PREGUNTAS FRECUENTES
+================================================================
+
+P: ¿Puedo usar mi propio dominio?
+R: Sí, configura un Custom Domain en Heroku Dashboard
+
+P: ¿Cuántos videos puedo tener?
+R: Ilimitados, solo modifica el array en api/stream.php
+
+P: ¿Puedo cambiar el video de quasars a otro servidor?
+R: Sí, edita $VIDEO_URL en api/stream.php
+
+P: ¿Es 100% seguro?
+R: Más seguro que un link directo. La URL nunca se expone al navegador.
+
+P: ¿Puedo descargar el video?
+R: Técnicamente sí con herramientas, pero requiere token válido que expira en 1h
+
+================================================================
+SOPORTE
+================================================================
+
+Documentación completa: README.md
+Sistema de reproductor: REPRODUCTOR_SEGURO.md
+Despliegue detallado: DEPLOY.md
+
+================================================================
+¡LISTO! Tu reproductor seguro está en producción 🎉
+================================================================
+
+URL de acceso: https://mi-reproductor-seguro.herokuapp.com/access.php
+
+Recuerda reemplazar "mi-reproductor-seguro" con el nombre real
+de tu aplicación en Heroku.
+
