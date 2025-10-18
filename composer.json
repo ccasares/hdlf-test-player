@@ -1,5 +1,5 @@
 {
-    "name": "protected-video-server",
+    "name": "app/protected-video-server",
     "description": "Servidor de videos protegidos con tokens temporales y validación HMAC",
     "type": "project",
     "require": {
@@ -10,9 +10,6 @@
             "name": "Video Server",
             "email": "admin@example.com"
         }
-    ],
-    "autoload": {
-        "files": []
-    }
+    ]
 }
 
